@@ -16,22 +16,22 @@ def selectFrames():
 
 class ExtendGpFrame(bpy.types.Operator):
     """Extend the current Grease Pencil keyframe"""
-    bl_idname = "action.extend_gp_frame" menu items to reference.
+    bl_idname = "action.extend_gp_frame"
     bl_label = "Extend frame"
-    bl_options = {'REGISTER', 'UNDO'} 
+    bl_options = {'REGISTER', 'UNDO'}
 
 
-    def execute(self, context): 
+    def execute(self, context):
         if bpy.context.area.type == 'DOPESHEET_EDITOR':
             selectFrames()
             bpy.ops.transform.transform(mode='TIME_TRANSLATE', value=(1,0,0,0))
 
-        return {'FINISHED'} 
-        
+        return {'FINISHED'}
+
 class ShortenGpFrame(bpy.types.Operator):
     """Shorten the current Grease Pencil keyframe"""
     bl_idname = "action.shorten_gp_frame"
-    bl_label = "Shorten frame" 
+    bl_label = "Shorten frame"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
@@ -65,6 +65,6 @@ def unregister():
 
 if __name__ == "__main__":
     register()
-    
+
 
 # Based on the tutorial at https://docs.blender.org/manual/en/latest/advanced/scripting/addon_tutorial.html
