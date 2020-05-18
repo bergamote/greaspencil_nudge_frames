@@ -1,9 +1,10 @@
 bl_info = {
     "name": "Nudge Grease Pencil Frames",
-    "Description": "Shorten (D) or Extend (F) the duration of the current Grease Pencil frame",
+    "author": "Pevin Kinel (bergamote)",
     "blender": (2, 80, 0),
+    "location": "Dopesheet > Keyboard D and F",
+    "description": "Shorten (D) or extend (F) GP frames",
     "category": "Animation",
-    "author": "bergamote"
 }
 
 import bpy
