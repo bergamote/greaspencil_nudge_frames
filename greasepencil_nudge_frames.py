@@ -3,7 +3,7 @@ bl_info = {
     "author": "Pevin Kinel (bergamote)",
     "blender": (2, 80, 0),
     "location": "Dopesheet > Keyboard D and F",
-    "description": "Shorten (D) or extend (F) GP frames",
+    "description": "Shorten (D) or extend (F) the current GP frame",
     "category": "Animation",
 }
 
@@ -51,7 +51,7 @@ def register():
     wm = bpy.context.window_manager
     kc = wm.keyconfigs.addon
     if kc:
-        km = wm.keyconfigs.addon.keymaps.new(name='Window', space_type='EMPTY')
+        km = wm.keyconfigs.addon.keymaps.new(name='Animation', space_type='EMPTY')
         kmi = km.keymap_items.new(ExtendGpFrame.bl_idname, 'F', 'PRESS')
         addon_keymaps.append((km, kmi))
         kmi = km.keymap_items.new(ShortenGpFrame.bl_idname, 'D', 'PRESS')
@@ -66,6 +66,3 @@ def unregister():
 
 if __name__ == "__main__":
     register()
-
-
-# Based on the tutorial at https://docs.blender.org/manual/en/latest/advanced/scripting/addon_tutorial.html
