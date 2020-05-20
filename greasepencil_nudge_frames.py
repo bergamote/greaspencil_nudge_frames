@@ -23,7 +23,7 @@ class ExtendGpFrame(bpy.types.Operator):
 
 
     def execute(self, context):
-        if bpy.context.area.type == 'DOPESHEET_EDITOR':
+        if bpy.context.space_data.ui_mode == 'GPENCIL':
             selectFrames()
             bpy.ops.transform.transform(mode='TIME_TRANSLATE', value=(1,0,0,0))
 
@@ -36,7 +36,7 @@ class ShortenGpFrame(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        if bpy.context.area.type == 'DOPESHEET_EDITOR':
+        if bpy.context.space_data.ui_mode == 'GPENCIL':
             selectFrames()
             bpy.ops.transform.transform(mode='TIME_TRANSLATE', value=(-1,0,0,0))
 
