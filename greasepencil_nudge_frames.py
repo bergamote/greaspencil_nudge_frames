@@ -14,6 +14,13 @@ def selectFrames():
     bpy.ops.action.select_leftright(mode="LEFT", extend=False)
     bpy.ops.action.select_all(action='INVERT')
 
+def checkSelObject(context):
+    obj = context.selected_objects
+    if len(obj) > 1:
+        print('More than one object selected')
+        return False
+    else:
+        return obj[0]
 
 class ExtendGpFrame(bpy.types.Operator):
     """Extend the current Grease Pencil keyframe"""
@@ -23,11 +30,18 @@ class ExtendGpFrame(bpy.types.Operator):
 
 
     def execute(self, context):
-        if bpy.context.space_data.ui_mode == 'GPENCIL':
+        if context.space_data.ui_mode != 'GPENCIL':
+            return {'CANCELLED'}
+
+        obj = checkSelObject(context)
+        if obj:
             selectFrames()
             bpy.ops.transform.transform(mode='TIME_TRANSLATE', value=(1,0,0,0))
 
-        return {'FINISHED'}
+            return {'FINISHED'}
+        else:
+            return {'CANCELLED'}
+
 
 class ShortenGpFrame(bpy.types.Operator):
     """Shorten the current Grease Pencil keyframe"""
@@ -36,11 +50,31 @@ class ShortenGpFrame(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        if bpy.context.space_data.ui_mode == 'GPENCIL':
+
+        if context.space_data.ui_mode != 'GPENCIL':
+            return {'CANCELLED'}
+
+        obj = checkSelObject(context)
+        if obj:
+            cur_fra = context.scene.frame_current
+            layers = bpy.data.objects[obj.name].data.layers
+            keyframes = []
+            for layer in layers:
+                if layer.lock == False:
+                    for i in layer.frames:
+                        if i.frame_number not in keyframes:
+                            keyframes.append(i.frame_number)
+
+            if (cur_fra in keyframes) and (cur_fra + 1) in keyframes:
+                print('clash')
+                return {'CANCELLED'}
+
             selectFrames()
             bpy.ops.transform.transform(mode='TIME_TRANSLATE', value=(-1,0,0,0))
 
-        return {'FINISHED'}
+            return {'FINISHED'}
+        else:
+            return {'CANCELLED'}
 
 
 addon_keymaps = []
