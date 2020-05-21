@@ -2,7 +2,7 @@ bl_info = {
     "name": "Nudge Grease Pencil Frames",
     "author": "Pevin Kinel (bergamote)",
     "blender": (2, 80, 0),
-    "location": "Dopesheet > Keyboard D and F",
+    "location": "Dopesheet > Grease Pencil > Keyboard D and F",
     "description": "Shorten (D) or extend (F) the current GP frame",
     "category": "Animation",
 }
@@ -16,13 +16,16 @@ def selectFrames():
     bpy.ops.action.select_all(action='INVERT')
 
 def checkSelObject(context):
-    '''Make sure only 1 object is selected'''
+    '''Make sure only 1 GPENCIL object is selected'''
     obj = context.selected_objects
     if len(obj) > 1:
         print('More than one object selected')
         return False
     else:
-        return obj[0]
+        if obj[0].type == 'GPENCIL':
+            return obj[0]
+        else:
+            return False
 
 def layerUnlocked(obj):
     '''Make sure active gp layer isn't locked'''
