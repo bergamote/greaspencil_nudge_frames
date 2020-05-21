@@ -11,16 +11,29 @@ import bpy
 
 
 def selectFrames():
+    '''Select every keyframe to the right of current frame'''
     bpy.ops.action.select_leftright(mode="LEFT", extend=False)
     bpy.ops.action.select_all(action='INVERT')
 
 def checkSelObject(context):
+    '''Make sure only 1 object is selected'''
     obj = context.selected_objects
     if len(obj) > 1:
         print('More than one object selected')
         return False
     else:
         return obj[0]
+
+def layerUnlocked(obj):
+    '''Make sure active gp layer isn't locked'''
+    if obj:
+        active_layer = obj.data.layers.active_note
+        if obj.data.layers[active_layer].lock == False:
+            return True
+        else:
+            return False
+    else:
+        return False
 
 class ExtendGpFrame(bpy.types.Operator):
     """Extend the current Grease Pencil keyframe"""
@@ -34,7 +47,7 @@ class ExtendGpFrame(bpy.types.Operator):
             return {'CANCELLED'}
 
         obj = checkSelObject(context)
-        if obj:
+        if obj and layerUnlocked(obj):
             selectFrames()
             bpy.ops.transform.transform(mode='TIME_TRANSLATE', value=(1,0,0,0))
 
@@ -55,7 +68,7 @@ class ShortenGpFrame(bpy.types.Operator):
             return {'CANCELLED'}
 
         obj = checkSelObject(context)
-        if obj:
+        if obj and layerUnlocked(obj):
             cur_fra = context.scene.frame_current
             layers = bpy.data.objects[obj.name].data.layers
             keyframes = []
@@ -66,7 +79,7 @@ class ShortenGpFrame(bpy.types.Operator):
                             keyframes.append(i.frame_number)
 
             if (cur_fra in keyframes) and (cur_fra + 1) in keyframes:
-                print('clash')
+                # frame would be overwritten
                 return {'CANCELLED'}
 
             selectFrames()
