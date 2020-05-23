@@ -77,9 +77,10 @@ class ShortenGpFrame(bpy.types.Operator):
             keyframes = []
             for layer in layers:
                 if layer.lock == False:
-                    for i in layer.frames:
-                        if i.frame_number not in keyframes:
-                            keyframes.append(i.frame_number)
+                    if cur_fra == layer.active_frame.frame_number:
+                        for i in layer.frames:
+                            if i.frame_number not in keyframes:
+                                keyframes.append(i.frame_number)
 
             if (cur_fra in keyframes) and (cur_fra + 1) in keyframes:
                 # frame would be overwritten
