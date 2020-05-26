@@ -2,7 +2,7 @@
 
 
 This is very simple Add-on for [Blender](http://blender.org), to speed up modifying the length of Greasepencil frames.  
-It adds two keyboard shortcuts to the Dopesheet, `D` to shorten and `F` to extend, the duration of the currently displayed keyframe by 1 frame.
+It adds two keyboard shortcuts to the GP Dopesheet, `D` to shorten and `F` to extend, the duration of the currently displayed keyframe by 1 frame.
 
 Pressing `D` does the same thing as typing `[`, `Ctrl+I`, `G`, `-`, `1` and `Enter`.  
 Pressing `F` does the same thing as typing `[`, `Ctrl+I`, `G`, `1` and `Enter`.

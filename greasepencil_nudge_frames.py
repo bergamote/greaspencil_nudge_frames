@@ -29,14 +29,13 @@ def checkSelObject(context):
 
 def layerUnlocked(obj):
     '''Make sure active gp layer isn't locked'''
+    layer_ready = False
     if obj:
         active_layer = obj.data.layers.active_note
-        if obj.data.layers[active_layer].lock == False:
-            return True
-        else:
-            return False
-    else:
-        return False
+        if active_layer:
+            if obj.data.layers[active_layer].lock == False:
+                layer_ready = True
+    return layer_ready
 
 class ExtendGpFrame(bpy.types.Operator):
     """Extend the current Grease Pencil keyframe"""
