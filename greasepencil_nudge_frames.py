@@ -45,6 +45,8 @@ class ExtendGpFrame(bpy.types.Operator):
 
 
     def execute(self, context):
+        if bpy.context.area.type != 'DOPESHEET_EDITOR':
+            return {'CANCELLED'}
         if context.space_data.ui_mode != 'GPENCIL':
             return {'CANCELLED'}
 
@@ -65,7 +67,8 @@ class ShortenGpFrame(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-
+        if bpy.context.area.type != 'DOPESHEET_EDITOR':
+            return {'CANCELLED'}
         if context.space_data.ui_mode != 'GPENCIL':
             return {'CANCELLED'}
 
