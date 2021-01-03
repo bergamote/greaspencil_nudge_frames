@@ -13,9 +13,4 @@ To install it, got to `Edit > Preferences > Add-ons > Install...`, select `greas
 ### Notes
 
 - The shortcuts change the length of the displayed frame for **every** unlocked layers. Make sure you isolate the layer you want to affect, or lock the ones you want to keep in place.
-- This is my first add-on for Blender so most likely badly written and possibly buggy. Use at your own risks and all that.
-
-
-### To do
-
-- Save keyframe selection before the operation and get back to that selection after the operation is done.
+- This is my first add-on for Blender so use at your own risks and all that.
