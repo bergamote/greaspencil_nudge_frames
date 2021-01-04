@@ -15,27 +15,27 @@ def selectFrames():
     bpy.ops.action.select_leftright(mode="LEFT", extend=False)
     bpy.ops.action.select_all(action='INVERT')
 
-def checkSelObject(context):
-    '''Make sure only 1 GPENCIL object is selected'''
-    obj = context.selected_objects
-    if len(obj) > 1:
-        print('More than one object selected')
-        return False
-    else:
-        if obj[0].type == 'GPENCIL':
-            return obj[0]
-        else:
-            return False
+def checkContext(context):
+    valid = False
+    if (bpy.context.area.type == 'DOPESHEET_EDITOR' and
+        context.space_data.ui_mode == 'GPENCIL'):
+        valid = True
+    return valid
 
-def layerUnlocked(obj):
-    '''Make sure active gp layer isn't locked'''
-    layer_ready = False
+def checkSelObject(context):
+    '''Make sure at least 1 GPENCIL object is selected'''
+    valid = False
+    obj = context.selected_objects
+    gp_objs = []
     if obj:
-        active_layer = obj.data.layers.active_note
-        if active_layer:
-            if obj.data.layers[active_layer].lock == False:
-                layer_ready = True
-    return layer_ready
+        gp_objs = []
+        for sel_obj in obj:
+            if sel_obj.type == 'GPENCIL':
+                valid = True
+                gp_objs.append(sel_obj)
+    else:
+        return False
+    return gp_objs
 
 class ExtendGpFrame(bpy.types.Operator):
     """Extend the current Grease Pencil keyframe"""
@@ -43,18 +43,10 @@ class ExtendGpFrame(bpy.types.Operator):
     bl_label = "Extend frame"
     bl_options = {'REGISTER', 'UNDO'}
 
-
     def execute(self, context):
-        if bpy.context.area.type != 'DOPESHEET_EDITOR':
-            return {'CANCELLED'}
-        if context.space_data.ui_mode != 'GPENCIL':
-            return {'CANCELLED'}
-
-        obj = checkSelObject(context)
-        if obj and layerUnlocked(obj):
+        if checkContext(context) and checkSelObject(context):
             selectFrames()
             bpy.ops.transform.transform(mode='TIME_TRANSLATE', value=(1,0,0,0))
-
             return {'FINISHED'}
         else:
             return {'CANCELLED'}
@@ -67,27 +59,22 @@ class ShortenGpFrame(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        if bpy.context.area.type != 'DOPESHEET_EDITOR':
-            return {'CANCELLED'}
-        if context.space_data.ui_mode != 'GPENCIL':
-            return {'CANCELLED'}
-
-        obj = checkSelObject(context)
-        if obj and layerUnlocked(obj):
-            cur_fra = context.scene.frame_current
-            layers = bpy.data.objects[obj.name].data.layers
-            keyframes = []
-            for layer in layers:
-                if layer.lock == False:
-                    if layer.active_frame:
+        cur_fra = context.scene.frame_current
+        objects = checkSelObject(context)
+        if checkContext(context) and objects:
+            for obj in objects:
+                layers = bpy.data.objects[obj.name].data.layers
+                for layer in layers:
+                    keyframes = []
+                    if layer.lock == False and layer.active_frame:
                         cur_fra == layer.active_frame.frame_number
                         for i in layer.frames:
                             if i.frame_number not in keyframes:
                                 keyframes.append(i.frame_number)
 
-            if (cur_fra in keyframes) and (cur_fra + 1) in keyframes:
-                # frame would be overwritten
-                return {'CANCELLED'}
+                    if (cur_fra in keyframes) and (cur_fra + 1) in keyframes:
+                        # frame would be overwritten
+                        return {'CANCELLED'}
 
             selectFrames()
             bpy.ops.transform.transform(mode='TIME_TRANSLATE', value=(-1,0,0,0))
