@@ -1,18 +1,23 @@
 # Greasepencil Nudge Frames
 
 
-This is simple Add-on for [Blender](http://blender.org), to speed up modifying the length (exposure) of Greasepencil frames.  
-It adds two keyboard shortcuts to the GP Dopesheet, `D` to shorten and `F` to extend, the duration of the currently displayed keyframe by 1 frame.
+A simple [Blender](http://blender.org) add-on to modify the length (exposure) of greasepencil frames.  
 
 ![shortcut example animation](gp_nudge.gif)
 
-Pressing `D` does the same thing as typing `[`, `Ctrl+I`, `G`, `-`, `1` and `Enter`.  
-Pressing `F` does the same thing as typing `[`, `Ctrl+I`, `G`, `1` and `Enter`.
 
-To install it, got to `Edit > Preferences > Add-ons > Install...`, select `greasepencil_nudge_frames.py` and confirm, then enable it by ticking the checkbox.
+### Install
+
+Go to `Edit > Preferences > Add-ons > Install...` then navigate to the `greaspencil_nudge_frames` folder. Select `greasepencil_nudge_frames.py` and confirm, then enable it with the checkbox.
 
 
-### Notes
+### Usage
 
-- The shortcuts change the length of the displayed frame for **every** unlocked layers in **all** selected GP objects. Make sure you isolate the layer you want to affect, or lock the ones you want to keep in place.
-- This is my first add-on for Blender so use at your own risks and all that.
+With the mouse over the Grease Pencil Dopesheet, press:
+
+- `D` to shorten by 1 frame
+- `F` to extend by 1 frame
+
+The shortcuts change the length of the displayed frame(s) for **every** unlocked layers in **all** selected GP objects. Make sure you isolate the layer you want to affect or lock the ones you want to keep in place.
+
+I tried to make sure that frames aren't overwritten by accident, so when the current keyframe in any unlocked layer (even if hidden) is only one frame away from the next, the `D` shortcut is disabled. Even so, this is my first add-on so use at your own risks and all that.
