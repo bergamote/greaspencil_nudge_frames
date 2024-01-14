@@ -93,9 +93,9 @@ def register():
     kc = wm.keyconfigs.addon
     if kc:
         km = wm.keyconfigs.addon.keymaps.new(name='Animation', space_type='EMPTY')
-        kmi = km.keymap_items.new(ExtendGpFrame.bl_idname, 'F', 'PRESS')
+        kmi = km.keymap_items.new(ExtendGpFrame.bl_idname, 'F', 'PRESS', repeat=True)
         addon_keymaps.append((km, kmi))
-        kmi = km.keymap_items.new(ShortenGpFrame.bl_idname, 'D', 'PRESS')
+        kmi = km.keymap_items.new(ShortenGpFrame.bl_idname, 'D', 'PRESS', repeat=True)
         addon_keymaps.append((km, kmi))
 
 def unregister():
