@@ -1,5 +1,10 @@
 # Greasepencil Nudge Frames
 
+## Warning: this is the repo for the addon for GP 2 (up to Blender 4.2)
+
+**For the extension for GP 3 (Blender 4.3 or later), development is on Codeberg: [https://codeberg.org/bergamote/GP_nudge_frames](https://codeberg.org/bergamote/GP_nudge_frames)**
+
+---
 
 A simple [Blender](http://blender.org) add-on to modify the length (exposure) of greasepencil frames.  
 
